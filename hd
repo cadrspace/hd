@@ -101,14 +101,20 @@ end
 
 # Print IDs of items from an ARRAY to stdout.
 def print_item_list(array)
+  max_title_len = array.inject(20) do |p, e|
+    e['title'].length > p ? e['title'].length : p
+  end
+
   array.each { |elem|
     sn = elem['serial']
-    print "#{elem['id']['$oid']}: #{elem['title']}"
-    if not sn == nil and not sn.empty?
-      puts " (S/N: #{sn})"
-    else
-      puts ""
-    end
+    printf "%s: %-#{max_title_len}s %s\n",
+           elem['id']['$oid'],
+           elem['title'],
+           if not sn == nil and not sn.empty?
+             " (S/N: #{sn})"
+           else
+             ""
+           end
   }
 end
 
