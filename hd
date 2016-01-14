@@ -80,7 +80,7 @@ def get_all_items(access_token, expiry, client)
                    :token_type => "Bearer",
                    :expiry => expiry,
                    :client => client,
-                   :uid => "poptsov.artyom@gmail.com"
+                   :uid => $options[:user]
                  })
 end
 
@@ -95,7 +95,7 @@ def get_item(id, access_token, expiry, client)
                    :token_type => "Bearer",
                    :expiry => expiry,
                    :client => client,
-                   :uid => "poptsov.artyom@gmail.com"
+                   :uid => $options[:user]
                  })
 end
 
