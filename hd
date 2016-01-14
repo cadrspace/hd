@@ -51,6 +51,7 @@ opt_parser.parse!
 
 # HackDepot instance domain name.
 HACKDEPOT_INSTANCE = 'hd.cadr.nntc.nnov.ru'
+API_VERSION = "v1"
 
 
 ### Helper methods
@@ -63,7 +64,7 @@ def authenticate(email, password)
     :password => password
   }
 
-  RestClient.post("https://#{HACKDEPOT_INSTANCE}/api/v1/auth/sign_in",
+  RestClient.post("https://#{HACKDEPOT_INSTANCE}/api/#{API_VERSION}/auth/sign_in",
                   request_body_map.to_json,
                   {:content_type => 'application/json',
                    :accept => 'application/json'})
@@ -72,7 +73,7 @@ end
 # Get IDs of all items registered in HackDepot.  Use ACCESS_TOKEN,
 # EXPIRY and CLIENT for authentication.
 def get_all_items(access_token, expiry, client)
-  RestClient.get("https://#{HACKDEPOT_INSTANCE}/api/v1/items",
+  RestClient.get("https://#{HACKDEPOT_INSTANCE}/api/#{API_VERSION}/items",
                  {
                    :content_type => 'application/json',
                    :accept => 'application/json',
@@ -87,7 +88,7 @@ end
 # Get information about item with ID.  Use ACCESS_TOKEN, EXPIRY and
 # CLIENT for authentication.
 def get_item(id, access_token, expiry, client)
-  RestClient.get("https://#{HACKDEPOT_INSTANCE}/api/v1/items/#{id}",
+  RestClient.get("https://#{HACKDEPOT_INSTANCE}/api/#{API_VERSION}/items/#{id}",
                  {
                    :content_type => 'application/json',
                    :accept => 'application/json',
