@@ -1,2 +1,2 @@
 * hd -- HackDepot console client
-  A console client that allows to query HackDepot instance for items.
+  A console client that allows to query [[https://github.com/cadrspace/hackdepot][HackDepot]] instance for items.
