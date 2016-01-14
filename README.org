@@ -1,0 +1,2 @@
+* hd -- HackDepot console client
+  A console client that allows to query HackDepot instance for items.
