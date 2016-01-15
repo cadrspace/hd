@@ -120,6 +120,13 @@ def print_item_list(array)
   }
 end
 
+# Print an ITEM to stdout in a human-friendly manner.
+def print_item(item)
+  item.each_pair { |key, value|
+    printf "%s: %s\n", key, value
+  }
+end
+
 
 ###
 
@@ -132,7 +139,7 @@ def handle_item
                    auth_rsp.headers[:access_token],
                    auth_rsp.headers[:expiry],
                    auth_rsp.headers[:client]
-    puts rsp
+    print_item JSON.parse(rsp)
   else
     rsp = get_all_items auth_rsp.headers[:access_token],
                         auth_rsp.headers[:expiry],
