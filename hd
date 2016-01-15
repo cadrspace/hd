@@ -34,6 +34,7 @@
 require 'rest-client'
 require 'json'
 require 'optparse'
+require 'colorize'
 
 $options = {}
 
@@ -44,6 +45,12 @@ opt_parser = OptionParser.new do |opt|
   opt.on("-p", "--password=PASSWORD", "Set password.") do |password|
     $options[:password] = password
   end
+
+  $options[:nocolor] = false
+  opt.on("-n", "--nocolor", "Disable ASCI color codes.") do
+    $options[:nocolor] = true
+  end
+
 end
 
 opt_parser.parse!
@@ -122,9 +129,18 @@ end
 
 # Print an ITEM to stdout in a human-friendly manner.
 def print_item(item)
-  item.each_pair { |key, value|
-    printf "%s: %s\n", key, value
-  }
+  if $options[:nocolor] == true
+    p = proc { |key, value|
+          printf "%s: %s", key, value
+    }
+  else
+    p = proc { |key, value|
+          print "#{key}: ".green
+          puts value
+    }
+  end
+
+  item.each_pair(&p)
 end
 
 
