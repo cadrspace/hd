@@ -147,11 +147,11 @@ end
 ###
 
 # Handle "item" command.
-def handle_item
+def handle_item(args)
   auth_rsp = authenticate $options[:user], $options[:password]
 
-  if not ARGV[1] == nil
-    rsp = get_item ARGV[1],
+  if not args[1] == nil
+    rsp = get_item args[1],
                    auth_rsp.headers[:access_token],
                    auth_rsp.headers[:expiry],
                    auth_rsp.headers[:client]
@@ -186,7 +186,7 @@ end
 def main
   case ARGV[0]
   when "item"
-    handle_item
+    handle_item ARGV
   else
     print_help_and_exit
   end
