@@ -177,6 +177,9 @@ def handle_item(config, args)
   user = $options[:user] ? $options[:user] : user
   password = $options[:password] ? $options[:password] : password
 
+  user or raise "'user' should be specified."
+  password or raise "'password' should be specified"
+
   auth_rsp = authenticate user, password
 
   if not args[1] == nil
