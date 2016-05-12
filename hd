@@ -64,9 +64,11 @@ opt_parser.parse!
 
 
 # HackDepot instance domain name.
-HACKDEPOT_INSTANCE = 'hd.cadr.nntc.nnov.ru'
+HACKDEPOT_DEFAULT_INSTANCE = 'hd.cadr.nntc.nnov.ru'
 API_VERSION = "v1"
-API_BASE_URL = "https://#{HACKDEPOT_INSTANCE}/api/#{API_VERSION}"
+
+$hackdepot_instance = ""
+$api_base_url = ""
 
 
 ### Helper methods
@@ -80,7 +82,7 @@ def authenticate(email, password)
   }
 
   client = RestClient::Resource.new(
-    "#{API_BASE_URL}/auth/sign_in",
+    "#{$api_base_url}/auth/sign_in",
     :verify_ssl => $options[:insecure] ?
                      OpenSSL::SSL::VERIFY_NONE
                    : OpenSSL::SSL::VERIFY_PEER)
@@ -94,7 +96,7 @@ end
 # and CLIENT for authentication.
 def get_all_items(user, access_token, expiry, client, page)
   resource = RestClient::Resource.new(
-    "#{API_BASE_URL}/items?page=#{page}",
+    "#{$api_base_url}/items?page=#{page}",
     :verify_ssl => $options[:insecure] ?
                      OpenSSL::SSL::VERIFY_NONE
                    : OpenSSL::SSL::VERIFY_PEER)
@@ -114,7 +116,7 @@ end
 # CLIENT for authentication.
 def get_item(user, id, access_token, expiry, client)
   resource = RestClient::Resource.new(
-    "#{API_BASE_URL}/items/#{id}",
+    "#{$api_base_url}/items/#{id}",
     :verify_ssl => $options[:insecure] ?
                      OpenSSL::SSL::VERIFY_NONE
                    : OpenSSL::SSL::VERIFY_PEER)
@@ -229,6 +231,13 @@ Commands:
   exit
 end
 
+def set_global_variables (config)
+  $hackdepot_instance = config['HackDepot']['instance'] ?
+                          config['HackDepot']['instance']
+                        : HACKDEPOT_DEFAULT_INSTANCE
+  $api_base_url = "https://#{$hackdepot_instance}/api/#{API_VERSION}"
+end
+
 
 ### Entry point
 
@@ -238,6 +247,8 @@ def main
   rescue
     config = nil
   end
+
+  set_global_variables config
 
   case ARGV[0]
   when "item"
