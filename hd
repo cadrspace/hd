@@ -192,10 +192,6 @@ def handle_item(config, args)
                    auth_rsp.headers[:client]
     print_item JSON.parse(rsp)
   else
-    def get_page (page)
-
-    end
-
     page = 0
     while true
       rsp = get_all_items user,
