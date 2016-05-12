@@ -1,2 +1,34 @@
 * hd -- HackDepot console client
   A console client that allows to query [[https://github.com/cadrspace/hackdepot][HackDepot]] instance for items.
+** Configuration
+   There should be =hd.yaml= file with the configuration in the
+   program directory.
+
+   Example of file contents:
+#+BEGIN_EXAMPLE yaml
+HackDepot:
+  instance: "hd.example.org"
+  user:     "alice@example.org"
+  password: "secret"
+#+END_EXAMPLE
+** Usage
+   List all items:
+#+BEGIN_EXAMPLE
+$ hd --user=alice --password=qerty item
+#+END_EXAMPLE
+
+   Note that =--user= and =--password= parameters are optional when
+   their values were specified in =hd.yaml=.
+
+   Get information about one of the items:
+#+BEGIN_EXAMPLE
+$ hd item 569c12f86d986e11b2000006
+#+END_EXAMPLE
+
+   Get program usage information:
+#+BEGIN_EXAMPLE
+$ hd help
+#+END_EXAMPLE
+** License
+   GNU General Public License version 3 or later.  See =COPYING= file
+   for details.
