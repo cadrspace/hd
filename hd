@@ -90,24 +90,24 @@ def authenticate(email, password)
                :accept => 'application/json'}
 end
 
-# Get IDs of all items registered in HackDepot.  Use ACCESS_TOKEN,
-# EXPIRY and CLIENT for authentication.
-def get_all_items(user, access_token, expiry, client)
+# Get PAGE of items registered in HackDepot.  Use ACCESS_TOKEN, EXPIRY
+# and CLIENT for authentication.
+def get_all_items(user, access_token, expiry, client, page)
   resource = RestClient::Resource.new(
-    "#{API_BASE_URL}/items",
+    "#{API_BASE_URL}/items?page=#{page}",
     :verify_ssl => $options[:insecure] ?
                      OpenSSL::SSL::VERIFY_NONE
                    : OpenSSL::SSL::VERIFY_PEER)
 
   resource.get({
-               :content_type => 'application/json',
-               :accept => 'application/json',
-               :access_token => access_token,
-               :token_type => "Bearer",
-               :expiry => expiry,
-               :client => client,
-               :uid => user
-             })
+                 :content_type => 'application/json',
+                 :accept => 'application/json',
+                 :access_token => access_token,
+                 :token_type => "Bearer",
+                 :expiry => expiry,
+                 :client => client,
+                 :uid => user
+               })
 end
 
 # Get information about item with ID.  Use ACCESS_TOKEN, EXPIRY and
@@ -190,12 +190,25 @@ def handle_item(config, args)
                    auth_rsp.headers[:client]
     print_item JSON.parse(rsp)
   else
-    rsp = get_all_items user,
-                        auth_rsp.headers[:access_token],
-                        auth_rsp.headers[:expiry],
-                        auth_rsp.headers[:client]
+    def get_page (page)
 
-    print_item_list JSON.parse(rsp.body)
+    end
+
+    page = 0
+    while true
+      rsp = get_all_items user,
+                          auth_rsp.headers[:access_token],
+                          auth_rsp.headers[:expiry],
+                          auth_rsp.headers[:client],
+                          page
+      json = JSON.parse(rsp.body)
+      if json.length > 0
+        print_item_list json
+        page += 1
+      else
+        break
+      end
+    end
   end
 end
 
